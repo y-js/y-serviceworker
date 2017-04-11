@@ -1,0 +1,4 @@
+[submodule "dist"]
+	path = dist
+	url = git@github.com:y-js/y-serviceworker.git
+	branch = dist
