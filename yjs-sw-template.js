@@ -1,16 +1,26 @@
 /* eslint-env worker */
-
 // copy and modify this file
 
-self.DBConfig = {
-  name: 'indexeddb'
-}
-self.ConnectorConfig = {
+// The configuration of the connector that is used to connect to the outside
+self.connectorConfig = {
   name: 'websockets-client',
   // url: '..',
   options: {
     jsonp: false
   }
+}
+self.createYjsInstance = function (room, auth) {
+  return Y({
+    // yjs-sw-include creates connector-proxy based on connectorConfig
+    connector: {
+      name: 'connector-proxy',
+      room: room,
+      auth: auth
+    },
+    db: {
+      name: 'indexeddb'
+    }
+  })
 }
 
 importScripts(

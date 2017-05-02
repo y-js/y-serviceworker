@@ -1,9 +1,9 @@
 /* eslint-env worker */
-/* global Y, ConnectorConfig, DBConfig */
+/* global Y, connectorConfig */
 
-class ServiceWorkerConnector extends Y[ConnectorConfig.name] {
+class ConnectorProxy extends Y[connectorConfig.name] {
   constructor (y, options) {
-    var dOptions = Y.utils.copyObject(ConnectorConfig)
+    var dOptions = Y.utils.copyObject(connectorConfig)
     dOptions.room = options.room
     dOptions.auth = options.auth
     super(y, dOptions)
@@ -42,7 +42,7 @@ class ServiceWorkerConnector extends Y[ConnectorConfig.name] {
     }
   }
 }
-Y.extend('serviceworker', ServiceWorkerConnector)
+Y.extend('connector-proxy', ConnectorProxy)
 
 var instances = {}
 
@@ -50,14 +50,7 @@ self.addEventListener('message', event => {
   if (event.data.guid != null && event.data.room != null) {
     var instance = instances[event.data.room]
     if (instance == null) {
-      instance = instances[event.data.room] = Y({
-        connector: {
-          name: 'serviceworker',
-          room: event.data.room,
-          auth: event.data.auth
-        },
-        db: DBConfig
-      })
+      instance = instances[event.data.room] = createYjsInstance(event.data.room, event.data.auth)
     }
     instance.then(function (y) {
       if (event.data.type === 'message') {
