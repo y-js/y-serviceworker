@@ -13,6 +13,8 @@ function extend (Y) {
 
       options.role = 'slave'
       super(y, options)
+      this.debug = Y.debug('y:service-worker')
+
       this.y.db.stopGarbageCollector()
       this.options = options
       this.guid = Y.utils.generateGuid() // we send this unique id with every postMessage. Later it becomes the userId
@@ -35,10 +37,10 @@ function extend (Y) {
           self.setUserId(self.guid)
         })
         navigator.serviceWorker.addEventListener('controllerchange', function () {
-          console.log('controllerchanged')
+          self.debug('controllerchanged')
           var sw = navigator.serviceWorker.controller
           if (self.serviceworker !== sw && sw !== null) {
-            console.log('replace old sw')
+            self.debug('replace old sw')
             self.userLeft('serviceworker')
             setNewServiceWorker(sw)
           }
