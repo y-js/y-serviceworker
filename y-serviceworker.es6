@@ -1,6 +1,6 @@
 /**
  * yjs - A framework for real-time p2p shared editing on any data
- * @version v12.1.7
+ * @version v12.2.1
  * @link http://y-js.org
  * @license MIT
  */
@@ -19,6 +19,7 @@ function extend (Y) {
       }
 
       options.role = 'slave'
+      options.preferUntransformed = true
       super(y, options)
       this.debug = Y.debug('y:service-worker')
 
@@ -80,6 +81,7 @@ function extend (Y) {
     }
     send (uid, message) {
       this.broadcast(message)
+      super.send(uid, message)
     }
     broadcast (message) {
       this.serviceworker.postMessage({
@@ -88,6 +90,7 @@ function extend (Y) {
         message: message,
         guid: this.guid
       })
+      super.broadcast(message)
     }
     isDisconnected () {
       return false
