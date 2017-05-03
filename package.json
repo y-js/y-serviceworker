@@ -1,6 +1,6 @@
 {
   "name": "y-serviceworker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Service Worker Connector for Yjs (enables communication with a Service Worker)",
   "main": "./src/ServiceWorker.js",
   "scripts": {
