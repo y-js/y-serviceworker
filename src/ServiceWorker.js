@@ -12,6 +12,7 @@ function extend (Y) {
       }
 
       options.role = 'slave'
+      options.preferUntransformed = true
       super(y, options)
       this.debug = Y.debug('y:service-worker')
 
@@ -73,6 +74,7 @@ function extend (Y) {
     }
     send (uid, message) {
       this.broadcast(message)
+      super.send(uid, message)
     }
     broadcast (message) {
       this.serviceworker.postMessage({
@@ -81,6 +83,7 @@ function extend (Y) {
         message: message,
         guid: this.guid
       })
+      super.broadcast(message)
     }
     isDisconnected () {
       return false
